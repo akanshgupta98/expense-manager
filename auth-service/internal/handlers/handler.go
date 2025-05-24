@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"auth-service/internal/service"
 	"log"
 	"net/http"
 
@@ -26,11 +27,32 @@ func LogMiddleWare() gin.HandlerFunc {
 func Registration(c *gin.Context) {
 
 	var payload RegistrationPayload
-
+	var response RegistrationResponse
 	err := c.ShouldBindJSON(&payload)
 	if err != nil {
 		c.Error(err)
 		return
 	}
+
+	serviceData := service.User{
+		Name:     payload.Name,
+		Email:    payload.Email,
+		Password: payload.Password,
+	}
+	err = service.RegisterUser(serviceData)
+	if err != nil {
+
+		c.Error(err)
+		return
+	}
+
+	response = RegistrationResponse{
+		APIResponse: APIResponse{
+			Error:   false,
+			Message: "user registered successfully.",
+			Data:    payload,
+		},
+	}
+	c.JSON(http.StatusCreated, response)
 
 }
