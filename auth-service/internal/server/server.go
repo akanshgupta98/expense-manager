@@ -5,6 +5,7 @@ import (
 	"auth-service/internal/handlers"
 	"fmt"
 
+	"github.com/akanshgupta98/go-logger"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,9 +15,11 @@ type Server struct {
 }
 
 func New(cfg config.Config) *Server {
+	logger.Debugf("Server new called")
+	gin.SetMode(gin.ReleaseMode)
 
 	return &Server{
-		router: gin.Default(),
+		router: gin.New(),
 		Addr:   fmt.Sprintf(":%s", cfg.ServerConfig.WebPort),
 	}
 
@@ -24,8 +27,8 @@ func New(cfg config.Config) *Server {
 
 func (s *Server) ListenAndServe() error {
 
-	s.RegisterRoutes()
 	s.RegisterMiddleWare()
+	s.RegisterRoutes()
 	err := s.router.Run(s.Addr)
 	if err != nil {
 		return err

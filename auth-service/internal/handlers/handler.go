@@ -2,13 +2,15 @@ package handlers
 
 import (
 	"auth-service/internal/service"
-	"log"
+	"auth-service/internal/util"
 	"net/http"
 
+	"github.com/akanshgupta98/go-logger"
 	"github.com/gin-gonic/gin"
 )
 
 func HealthCheck(c *gin.Context) {
+	logger.Debugf("Health Check invoked")
 	c.JSON(http.StatusOK, gin.H{
 		"server health": "OK",
 	})
@@ -17,7 +19,7 @@ func HealthCheck(c *gin.Context) {
 func LogMiddleWare() gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
-		log.Printf("API: %s, Method: %s, Host: %s", ctx.Request.URL, ctx.Request.Method, ctx.Request.Host)
+		logger.Infof("API: %s, Method: %s, Host: %s", ctx.Request.URL, ctx.Request.Method, ctx.Request.Host)
 		ctx.Next()
 
 	}
@@ -28,9 +30,9 @@ func Registration(c *gin.Context) {
 
 	var payload RegistrationPayload
 	var response RegistrationResponse
-	err := c.ShouldBindJSON(&payload)
+	err := util.ReadJSON(c, &payload)
 	if err != nil {
-		c.Error(err)
+		util.ErrorJSON(c, err)
 		return
 	}
 
@@ -41,18 +43,16 @@ func Registration(c *gin.Context) {
 	}
 	err = service.RegisterUser(serviceData)
 	if err != nil {
-
-		c.Error(err)
+		util.ErrorJSON(c, err)
 		return
 	}
 
 	response = RegistrationResponse{
 		APIResponse: APIResponse{
-			Error:   false,
 			Message: "user registered successfully.",
 			Data:    payload,
 		},
 	}
-	c.JSON(http.StatusCreated, response)
+	util.WriteJSON(c, response, http.StatusCreated)
 
 }

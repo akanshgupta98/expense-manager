@@ -2,7 +2,10 @@ module auth-service
 
 go 1.24.1
 
-require github.com/gin-gonic/gin v1.10.1
+require (
+	github.com/akanshgupta98/go-logger v1.0.1-0.20250526114930-2b00c8504f58
+	github.com/gin-gonic/gin v1.10.1
+)
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect

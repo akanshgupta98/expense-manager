@@ -1,3 +1,15 @@
+github.com/akanshgupta98/go-logger v1.0.0 h1:wgFGwCcopaGfv5KGfQOBwwUnUE7yQlH9UqDcUsz3FUw=
+github.com/akanshgupta98/go-logger v1.0.0/go.mod h1:SLQz7O2D8waZENwGC4uy1TSzYZ4dlqwqr9pqg97nkDI=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250525085221-e95fa6ff91d8 h1:vLg5ijBaStLqvNfY/5WkO8R2tcQFHNcNRrjljs+G4rw=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250525085221-e95fa6ff91d8/go.mod h1:SLQz7O2D8waZENwGC4uy1TSzYZ4dlqwqr9pqg97nkDI=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250525092957-c6a854ec1103 h1:OzOxwPTNVjiH4DYOtIrUsn9EhSeIgP9EmOS/k3XxOYo=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250525092957-c6a854ec1103/go.mod h1:SLQz7O2D8waZENwGC4uy1TSzYZ4dlqwqr9pqg97nkDI=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250525093416-3c8cefc7209e h1:UiWxGVnMKghf9cdcKrGoQ4R1WxWmKiv6d/1lo+J3rlQ=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250525093416-3c8cefc7209e/go.mod h1:SLQz7O2D8waZENwGC4uy1TSzYZ4dlqwqr9pqg97nkDI=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250525115532-4a8311e0bb4d h1:dn4owUpp1QPStUQG9ZDwNFmGS3i1KaJdbVUmZZFgNns=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250525115532-4a8311e0bb4d/go.mod h1:SLQz7O2D8waZENwGC4uy1TSzYZ4dlqwqr9pqg97nkDI=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250526114930-2b00c8504f58 h1:YBoiJ7bC4TcefnQusAFKoVebY/S3jcvsl1E+WOBG78c=
+github.com/akanshgupta98/go-logger v1.0.1-0.20250526114930-2b00c8504f58/go.mod h1:SLQz7O2D8waZENwGC4uy1TSzYZ4dlqwqr9pqg97nkDI=
 github.com/bytedance/sonic v1.11.6 h1:oUp34TzMlL+OY1OUWxHqsdkgC/Zfc85zGqw9siXjrc0=
 github.com/bytedance/sonic v1.11.6/go.mod h1:LysEHSvpvDySVdC2f87zGWf6CIKJcAvqab1ZaiQtds4=
 github.com/bytedance/sonic/loader v0.1.1 h1:c+e5Pt1k/cy5wMveRDyk2X4B9hF4g7an8N3zCYjJFNM=
