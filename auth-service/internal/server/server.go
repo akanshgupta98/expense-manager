@@ -39,7 +39,8 @@ func (s *Server) ListenAndServe() error {
 
 func (s *Server) RegisterRoutes() {
 	s.router.GET("/", handlers.HealthCheck)
-	s.router.POST("/auth/register", handlers.Registration)
+	s.router.POST("/auth/users", handlers.Registration)
+	s.router.GET("/auth/users", handlers.FetchAllUsers)
 }
 func (s *Server) RegisterMiddleWare() {
 	s.router.Use(handlers.LogMiddleWare())

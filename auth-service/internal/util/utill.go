@@ -14,7 +14,7 @@ func ReadJSON(c *gin.Context, data any) error {
 	if err != nil {
 		return err
 	}
-	logger.Debugf("data: %+v", data)
+	logger.Debugf("data in ReadJSON: %+v", data)
 	return nil
 }
 
@@ -30,13 +30,19 @@ func WriteJSON(c *gin.Context, data any, status ...int) {
 
 func ErrorJSON(c *gin.Context, err error, status ...int) {
 	statusCode := http.StatusInternalServerError
+	messages := make(map[string]string)
 	if len(status) != 0 {
 		statusCode = status[0]
 	}
-	errs := err.(validator.ValidationErrors)
-	messages := make(map[string]string)
-	for _, e := range errs {
-		messages[e.Field()] = e.Tag()
+	errs, ok := err.(validator.ValidationErrors)
+	if ok {
+		messages = make(map[string]string)
+		for _, e := range errs {
+			messages[e.Field()] = e.Tag()
+		}
+	} else {
+		messages["Message"] = err.Error()
+
 	}
 
 	data := ErrorJSONRespone{

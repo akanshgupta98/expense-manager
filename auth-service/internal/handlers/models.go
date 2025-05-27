@@ -14,3 +14,8 @@ type APIResponse struct {
 type RegistrationResponse struct {
 	APIResponse APIResponse `json:"response"`
 }
+
+type User RegistrationPayload
+type FetchUsersResponse struct {
+	Users []User
+}

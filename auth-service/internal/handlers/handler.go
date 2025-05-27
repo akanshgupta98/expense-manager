@@ -56,3 +56,25 @@ func Registration(c *gin.Context) {
 	util.WriteJSON(c, response, http.StatusCreated)
 
 }
+
+func FetchAllUsers(c *gin.Context) {
+	var result []User
+	data, err := service.FetchAllUsers()
+	if err != nil {
+		util.ErrorJSON(c, err)
+		return
+	}
+	for _, u := range data {
+		user := User{
+			Name:     u.Name,
+			Password: u.Password,
+			Email:    u.Email,
+		}
+		result = append(result, user)
+	}
+	response := FetchUsersResponse{
+		Users: result,
+	}
+	util.WriteJSON(c, response)
+
+}

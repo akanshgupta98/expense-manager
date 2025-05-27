@@ -1,0 +1,26 @@
+services:
+  auth-service:
+    build: 
+      context: ../auth-service
+      dockerfile: ../auth-service/auth-service.dockerfile
+    ports:
+      - "8082:80"
+    environment:
+      - DSN= host=postgres user=postgres password=mysecret database=auth sslmode=disable timezone=UTC connect_timeout=5
+      - ENV=Development
+    depends_on:
+      - postgres
+    restart: always
+  
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecret
+      - POSTGRES_DB=auth
+    volumes:
+      - ./db-data/auth-data:/var/lib/postgresql/data
+    
+      

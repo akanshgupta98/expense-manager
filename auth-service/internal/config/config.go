@@ -17,17 +17,19 @@ type ServerConfig struct {
 
 func New() *Config {
 
-	// serverCfg := ServerConfig{
-	// 	WebPort: "8082",
-	// }
-	// loggerCfg :=
-	return &Config{
-		ServerConfig: ServerConfig{
-			WebPort: "8082",
-		},
-		LoggerConfig: logger.LogCfg{
-			Env:    logger.DEV_ENV,
-			Writer: os.Stdout,
-		},
+	serverCfg := ServerConfig{
+		WebPort: "80",
 	}
+
+	loggerCfg := logger.LogCfg{
+		Env:    os.Getenv("ENV"),
+		Writer: os.Stdout,
+	}
+
+	cfg := Config{
+		ServerConfig: serverCfg,
+		LoggerConfig: loggerCfg,
+	}
+	return &cfg
+
 }
