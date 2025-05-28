@@ -9,13 +9,14 @@ import (
 type Config struct {
 	ServerConfig ServerConfig
 	LoggerConfig logger.LogCfg
+	SecretKey    string
 }
 
 type ServerConfig struct {
 	WebPort string
 }
 
-func New() *Config {
+func New() Config {
 
 	serverCfg := ServerConfig{
 		WebPort: "80",
@@ -29,7 +30,8 @@ func New() *Config {
 	cfg := Config{
 		ServerConfig: serverCfg,
 		LoggerConfig: loggerCfg,
+		SecretKey:    os.Getenv("JWT_Secret"),
 	}
-	return &cfg
+	return cfg
 
 }

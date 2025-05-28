@@ -78,3 +78,29 @@ func FetchAllUsers(c *gin.Context) {
 	util.WriteJSON(c, response)
 
 }
+
+func Login(c *gin.Context) {
+	var payload LoginPayload
+	err := util.ReadJSON(c, &payload)
+	if err != nil {
+		util.ErrorJSON(c, err, http.StatusBadRequest)
+		return
+	}
+	data := service.Login{
+		Email:    payload.Email,
+		Password: payload.Password,
+	}
+	token, err := service.LoginUser(data)
+	if err != nil {
+		util.ErrorJSON(c, err)
+		return
+	}
+
+	response := LoginResponse{
+		APIResponse: APIResponse{
+			Message: "login successfull",
+			Data:    token,
+		},
+	}
+	util.WriteJSON(c, response)
+}

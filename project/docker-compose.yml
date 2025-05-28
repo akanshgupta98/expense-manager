@@ -8,6 +8,7 @@ services:
     environment:
       - DSN= host=postgres user=postgres password=mysecret database=auth sslmode=disable timezone=UTC connect_timeout=5
       - ENV=Development
+      - JWT_Secret=randomabcios12
     depends_on:
       - postgres
     restart: always

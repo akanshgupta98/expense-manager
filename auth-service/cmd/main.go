@@ -21,9 +21,9 @@ func main() {
 		panic(err)
 	}
 
-	service.Initialize(db)
+	service.Initialize(db, cfg)
 
-	srv := server.New(*cfg)
+	srv := server.New(cfg)
 	logger.Infof("starting auth-server on port: %s", cfg.ServerConfig.WebPort)
 	err = srv.ListenAndServe()
 	if err != nil {

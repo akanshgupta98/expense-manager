@@ -1,14 +1,19 @@
 package service
 
 import (
+	"auth-service/internal/config"
 	"auth-service/internal/repository"
 	"database/sql"
 )
 
-var model repository.Models
+var service Service
 
-func Initialize(db *sql.DB) {
-	model = repository.New(db)
+func Initialize(db *sql.DB, cfg config.Config) {
+	service = Service{
+		model:  repository.New(db),
+		secret: cfg.SecretKey,
+	}
+
 }
 
 func RegisterUser(payload User) error {
@@ -18,7 +23,7 @@ func RegisterUser(payload User) error {
 		Password: payload.Password,
 		Email:    payload.Email,
 	}
-	err := model.User.CreateUser(data)
+	err := service.model.User.CreateUser(data)
 	if err != nil {
 		return err
 	}
@@ -29,7 +34,7 @@ func RegisterUser(payload User) error {
 
 func FetchAllUsers() ([]User, error) {
 	var result []User
-	data, err := model.User.GetAllUsers()
+	data, err := service.model.User.GetAllUsers()
 	if err != nil {
 		return nil, err
 	}
@@ -42,5 +47,25 @@ func FetchAllUsers() ([]User, error) {
 		result = append(result, user)
 	}
 	return result, nil
+
+}
+
+func LoginUser(data Login) (Token, error) {
+	var token Token
+	user, err := service.model.User.FetchByEmail(data.Email)
+	if err != nil {
+		return token, err
+	}
+	claims := Claims{
+		UserID: user.ID,
+	}
+	if data.Password == user.Password {
+		token, err = issueToken(claims)
+		if err != nil {
+			return token, err
+		}
+
+	}
+	return token, err
 
 }

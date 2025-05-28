@@ -41,6 +41,7 @@ func (s *Server) RegisterRoutes() {
 	s.router.GET("/", handlers.HealthCheck)
 	s.router.POST("/auth/users", handlers.Registration)
 	s.router.GET("/auth/users", handlers.FetchAllUsers)
+	s.router.POST("/auth/login", handlers.Login)
 }
 func (s *Server) RegisterMiddleWare() {
 	s.router.Use(handlers.LogMiddleWare())

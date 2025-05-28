@@ -19,3 +19,12 @@ type User RegistrationPayload
 type FetchUsersResponse struct {
 	Users []User
 }
+
+type LoginPayload struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}
+
+type LoginResponse struct {
+	APIResponse APIResponse
+}

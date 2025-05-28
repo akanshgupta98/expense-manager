@@ -49,5 +49,6 @@ func ErrorJSON(c *gin.Context, err error, status ...int) {
 		Error: true,
 		Msgs:  messages,
 	}
+	logger.Errorf("Error is: %s", messages)
 	c.JSON(statusCode, data)
 }
