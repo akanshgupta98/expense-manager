@@ -3,6 +3,8 @@ package repository
 import (
 	"database/sql"
 	"time"
+
+	"github.com/akanshgupta98/go-logger"
 )
 
 var db *sql.DB
@@ -81,8 +83,11 @@ func (u *User) FetchByEmail(email string) (User, error) {
 func (t *Token) CreateToken(data Token) error {
 	query := `INSERT INTO TOKEN (R_TOKEN, USER_ID,EXPIRY,CREATED_AT) VALUES($1,$2,$3,$4)`
 	expiry := time.Now().Add(data.Expiry)
+	expiry = expiry.UTC()
+	logger.Debugf("Expiry time is: %v", expiry)
+	logger.Debugf("Current time is: %v", time.Now().UTC())
 
-	rows, err := db.Query(query, data.RefreshToken, data.UserID, expiry, time.Now())
+	rows, err := db.Query(query, data.RefreshToken, data.UserID, expiry, time.Now().UTC())
 	if err != nil {
 		return err
 	}

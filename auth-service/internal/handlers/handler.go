@@ -26,6 +26,20 @@ func LogMiddleWare() gin.HandlerFunc {
 
 }
 
+// Just for Testing. Will be removed from here, as this micro-service will not be exposed to user.
+func CORSMiddleWare() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Headers", "*")
+		if c.Request.Method == "OPTIONS" {
+			c.Status(http.StatusOK)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 func Registration(c *gin.Context) {
 
 	var payload RegistrationPayload
@@ -57,6 +71,7 @@ func Registration(c *gin.Context) {
 
 }
 
+// Just for testing. Will be movedd to user-service
 func FetchAllUsers(c *gin.Context) {
 	var result []User
 	data, err := service.FetchAllUsers()

@@ -4,6 +4,9 @@ import (
 	"auth-service/internal/config"
 	"auth-service/internal/repository"
 	"database/sql"
+	"fmt"
+
+	"github.com/akanshgupta98/go-logger"
 )
 
 var service Service
@@ -65,6 +68,9 @@ func LoginUser(data Login) (Token, error) {
 			return token, err
 		}
 
+	} else {
+		logger.Errorf("password mismatch")
+		err = fmt.Errorf("username or password are incorrect")
 	}
 	return token, err
 

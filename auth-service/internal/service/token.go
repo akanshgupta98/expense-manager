@@ -14,7 +14,7 @@ func issueToken(claims Claims) (Token, error) {
 	// issue JWT token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userID": claims.UserID,
-		"exp":    time.Now().Add(time.Hour * 1),
+		"exp":    time.Now().Add(time.Hour * 1).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte(service.secret))

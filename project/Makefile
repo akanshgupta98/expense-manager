@@ -1,6 +1,6 @@
 AUTH_BINARY=authApp
 up:
-	@echo"Starting docker containers"
+	@echo "Starting docker containers"
 	docker-compose up -d
 up_build:
 	@echo "Building auth-service"
