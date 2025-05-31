@@ -58,6 +58,7 @@ services:
     
     environment:
       - ENV=Development
+    restart: always
     
   
     

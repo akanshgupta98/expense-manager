@@ -15,7 +15,11 @@ func New(cfg config.Config) *Server {
 		mux:  gin.New(),
 		addr: fmt.Sprintf(":%s", cfg.ServerCfg.WebPort),
 	}
-	server.mux.Use(cors.Default())
+	c := cors.DefaultConfig()
+	c.AllowCredentials = true
+	c.AllowAllOrigins = true
+	c.AllowHeaders = append(c.AllowHeaders, "Authorization")
+	server.mux.Use(cors.New(c))
 	server.mux.Use(middleware.LogMiddleware())
 	return &server
 }
