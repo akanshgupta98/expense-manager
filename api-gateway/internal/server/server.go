@@ -6,6 +6,7 @@ import (
 	"api-gateway/internal/middleware"
 	"fmt"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,13 +15,13 @@ func New(cfg config.Config) *Server {
 		mux:  gin.New(),
 		addr: fmt.Sprintf(":%s", cfg.ServerCfg.WebPort),
 	}
+	server.mux.Use(cors.Default())
+	server.mux.Use(middleware.LogMiddleware())
 	return &server
 }
 
 func (s *Server) ListenAndServe() error {
 	rg := s.mux.Group("/api/v1")
-	s.mux.Use(middleware.CORSMiddleWare())
-	middleware.RegisterMiddleware(rg)
 	v1.RegisterRoutes(rg)
 
 	err := s.mux.Run(s.addr)

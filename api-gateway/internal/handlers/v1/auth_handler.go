@@ -10,13 +10,6 @@ import (
 )
 
 func Login(c *gin.Context) {
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Header", "*")
-	if c.Request.Method == "OPTIONS" {
-		c.Status(http.StatusOK)
-		return
-	}
-
 	req, err := http.NewRequest("POST", "http://auth-service/auth/login", c.Request.Body)
 	if err != nil {
 		logger.Errorf("unable to create request: %s", err.Error())
