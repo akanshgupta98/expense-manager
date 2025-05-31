@@ -9,11 +9,14 @@ import (
 func New() Config {
 	return Config{
 		ServerCfg: ServerCfg{
-			WebPort: "8083",
+			WebPort: "80",
 		},
 		LoggerCfg: logger.LogCfg{
 			Env:    os.Getenv("ENV"),
 			Writer: os.Stdout,
+		},
+		DBConfig: DBConfig{
+			DSN: os.Getenv("DSN"),
 		},
 	}
 }

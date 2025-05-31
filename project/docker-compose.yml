@@ -23,5 +23,32 @@ services:
       - POSTGRES_DB=auth
     volumes:
       - ./db-data/auth-data:/var/lib/postgresql/data
+  
+  user-service:
+    build:
+      context: ../user-service
+      dockerfile: ../user-service/user-service.dockerfile
+    
+    ports:
+      - "8083:80"
+    depends_on:
+      - postgres-user
+    restart: always
+    environment:
+      - DSN= host=postgres-user user=postgres database=users password=myuser sslmode=disable timezone=UTC connect_timeout=5
+      - ENV=Development
+  
+  postgres-user:
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=users
+      - POSTGRES_PASSWORD=myuser
+    volumes:
+      - ./db-data/user-data/:/var/lib/postgresql/data
+    
+  
     
       
