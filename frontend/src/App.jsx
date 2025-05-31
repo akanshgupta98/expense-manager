@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const API_BASE = "http://localhost:8082/auth"; // Change if your backend runs elsewhere
+const API_BASE = "http://localhost:8081/api/v1"; // Change if your backend runs elsewhere
 
 // Simple Auth Context to share user info
 const AuthContext = React.createContext();
@@ -144,10 +144,10 @@ function Login() {
     e.preventDefault();
     setError(null);
     try {
-      const res = await axios.post(`${API_BASE}/login`, form);
+      const res = await axios.post(`${API_BASE}/auth/login`, form);
       console.log(res,"RES");
-      console.log(res.data.APIResponse.data.JWTToken,"TOKEN IS");
-      login(res.data.APIResponse.data.JWTToken); // expecting {token: "jwt_token_here"}
+      console.log(res.data.response.data.JWTToken,"TOKEN IS");
+      login(res.data.response.data.JWTToken); // expecting {token: "jwt_token_here"}
       navigate("/users");
     } catch (err) {
       console.log("ERR IS",err)

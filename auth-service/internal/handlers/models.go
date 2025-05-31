@@ -26,5 +26,5 @@ type LoginPayload struct {
 }
 
 type LoginResponse struct {
-	APIResponse APIResponse
+	APIResponse APIResponse `json:"response"`
 }
