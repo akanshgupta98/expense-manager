@@ -79,7 +79,7 @@ function Register() {
     setError(null);
     setSuccess(null);
     try {
-      await axios.post(`${API_BASE}/users`, form);
+      await axios.post(`${API_BASE}/user/users`, form);
       setSuccess("Registration successful! You can login now.");
       setForm({ email: "", name:"",password: "" });
       setTimeout(() => navigate("/login"), 1500);
@@ -197,7 +197,7 @@ function Users() {
     async function fetchUsers() {
       setError(null);
       try {
-        const res = await axios.get(`${API_BASE}/users`, {
+        const res = await axios.get(`${API_BASE}/user/users`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         setUsers(res.data.Users);

@@ -10,6 +10,8 @@ func RegisterRoutes(g *gin.RouterGroup) {
 	g.GET("/", HealthCheck)
 	gr := g.Group("/auth/")
 	RegisterAuthRoutes(gr)
+	userG := g.Group("/user/")
+	RegisterUserRoutes(userG)
 
 }
 
@@ -21,4 +23,9 @@ func HealthCheck(c *gin.Context) {
 
 func RegisterAuthRoutes(gr *gin.RouterGroup) {
 	gr.POST("/login", Login)
+	gr.POST("/register", Register)
+}
+
+func RegisterUserRoutes(g *gin.RouterGroup) {
+	g.GET("/users", FetchUsers)
 }

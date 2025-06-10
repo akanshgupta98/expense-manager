@@ -18,5 +18,11 @@ func New() Config {
 		DBConfig: DBConfig{
 			DSN: os.Getenv("DSN"),
 		},
+		AMQPConfig: AMQPConfig{
+			URL: os.Getenv("AMQP-URL"),
+			ConsumeExchanges: []string{
+				os.Getenv("AUTH-EXCHANGE"),
+			},
+		},
 	}
 }

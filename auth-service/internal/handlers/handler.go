@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"auth-service/internal/amqp"
 	"auth-service/internal/service"
 	"auth-service/internal/util"
 	"net/http"
@@ -26,36 +27,23 @@ func LogMiddleWare() gin.HandlerFunc {
 
 }
 
-// Just for Testing. Will be removed from here, as this micro-service will not be exposed to user.
-func CORSMiddleWare() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Headers", "*")
-		if c.Request.Method == "OPTIONS" {
-			c.Status(http.StatusOK)
-			return
-		}
-
-		c.Next()
-	}
-}
-
 func Registration(c *gin.Context) {
 
 	var payload RegistrationPayload
 	var response RegistrationResponse
+	// Read payload
 	err := util.ReadJSON(c, &payload)
 	if err != nil {
 		util.ErrorJSON(c, err)
 		return
 	}
 
-	serviceData := service.User{
-		Name:     payload.Name,
+	// send to service layer for processing.
+	serviceData := service.RegisterUserInput{
 		Email:    payload.Email,
 		Password: payload.Password,
 	}
-	err = service.RegisterUser(serviceData)
+	data, err := service.RegisterUser(serviceData)
 	if err != nil {
 		util.ErrorJSON(c, err)
 		return
@@ -64,9 +52,26 @@ func Registration(c *gin.Context) {
 	response = RegistrationResponse{
 		APIResponse: APIResponse{
 			Message: "user registered successfully.",
-			Data:    payload,
+			Data:    data,
 		},
 	}
+
+	eventData := amqp.UserCreatedEvent{
+		UserID:    data.UserID,
+		Email:     payload.Email,
+		FirstName: payload.FirstName,
+		LastName:  payload.LastName,
+		Country:   payload.Country,
+	}
+
+	err = amqp.PublishUserCreated(eventData)
+	if err != nil {
+		logger.Warnf("unable to publish event on message broker: %s", err.Error())
+
+	} else {
+		logger.Infof("published event of user creation")
+	}
+
 	util.WriteJSON(c, response, http.StatusCreated)
 
 }
@@ -81,7 +86,7 @@ func FetchAllUsers(c *gin.Context) {
 	}
 	for _, u := range data {
 		user := User{
-			Name:     u.Name,
+			// Name:     u.Name,
 			Password: u.Password,
 			Email:    u.Email,
 		}

@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/akanshgupta98/go-logger"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var service Service
@@ -19,31 +20,35 @@ func Initialize(db *sql.DB, cfg config.Config) {
 
 }
 
-func RegisterUser(payload User) error {
+func RegisterUser(payload RegisterUserInput) (RegisterUserOutput, error) {
+	response := RegisterUserOutput{}
+	pwdHash, err := bcrypt.GenerateFromPassword([]byte(payload.Password), 12)
+	if err != nil {
+		return response, err
+	}
 
 	data := repository.User{
-		Name:     payload.Name,
-		Password: payload.Password,
+		Password: string(pwdHash),
 		Email:    payload.Email,
 	}
-	err := service.model.User.CreateUser(data)
+	response.UserID, err = service.model.User.CreateUser(data)
 	if err != nil {
-		return err
+		return response, err
 	}
 
-	return nil
+	return response, nil
 
 }
 
-func FetchAllUsers() ([]User, error) {
-	var result []User
+func FetchAllUsers() ([]RegisterUserInput, error) {
+	var result []RegisterUserInput
 	data, err := service.model.User.GetAllUsers()
 	if err != nil {
 		return nil, err
 	}
 	for _, u := range data {
-		user := User{
-			Name:     u.Name,
+		user := RegisterUserInput{
+			// Name:     u.Name,
 			Email:    u.Email,
 			Password: u.Password,
 		}

@@ -2,10 +2,13 @@ package service
 
 import "auth-service/internal/repository"
 
-type User struct {
-	Name     string
+type RegisterUserInput struct {
 	Password string
 	Email    string
+}
+
+type RegisterUserOutput struct {
+	UserID int
 }
 
 type Login struct {

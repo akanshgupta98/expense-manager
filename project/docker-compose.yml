@@ -9,8 +9,11 @@ services:
       - DSN= host=postgres user=postgres password=mysecret database=auth sslmode=disable timezone=UTC connect_timeout=5
       - ENV=Development
       - JWT_Secret=randomabcios12
+      - AMQP-URL=amqp://guest:guest@rabbitmq
+      - AUTH-EXCHANGE="auth.events.user"
     depends_on:
       - postgres
+      - rabbitmq
     restart: always
   
   postgres:
@@ -23,7 +26,7 @@ services:
       - POSTGRES_DB=auth
     volumes:
       - ./db-data/auth-data:/var/lib/postgresql/data
-  
+
   user-service:
     build:
       context: ../user-service
@@ -33,10 +36,15 @@ services:
       - "8083:80"
     depends_on:
       - postgres-user
+      - rabbitmq
     restart: always
     environment:
       - DSN= host=postgres-user user=postgres database=users password=myuser sslmode=disable timezone=UTC connect_timeout=5
       - ENV=Development
+      - AMQP-URL=amqp://guest:guest@rabbitmq
+      - AUTH-EXCHANGE="auth.events.user"
+
+
   
   postgres-user:
     image: postgres:latest
@@ -59,6 +67,13 @@ services:
     environment:
       - ENV=Development
     restart: always
+  
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+    volumes:
+      - ./db-data/rabbitmq-data/:/var/lib/rabbitmq
     
   
     

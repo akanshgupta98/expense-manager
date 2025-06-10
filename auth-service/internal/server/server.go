@@ -44,6 +44,5 @@ func (s *Server) RegisterRoutes() {
 	s.router.POST("/auth/login", handlers.Login)
 }
 func (s *Server) RegisterMiddleWare() {
-	// s.router.Use(handlers.CORSMiddleWare())
 	s.router.Use(handlers.LogMiddleWare())
 }

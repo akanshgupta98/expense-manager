@@ -1,6 +1,7 @@
 package main
 
 import (
+	"user-service/internal/amqp"
 	"user-service/internal/config"
 	"user-service/internal/database"
 	"user-service/internal/server"
@@ -20,6 +21,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = amqp.Connect(cfg)
+	if err != nil {
+		panic(err)
+	}
+	consumer := map[amqp.EXCHANGE]amqp.TOPICS{}
+	for _, ex := range cfg.AMQPConfig.ConsumeExchanges {
+		consumer[ex] = []string{"user.*"}
+	}
+
+	go amqp.ConsumeEvents(consumer)
 
 	service.Initialize(db)
 	srv := server.New(cfg)

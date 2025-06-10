@@ -17,15 +17,21 @@ func New(dbpool *sql.DB) Models {
 	}
 }
 
-func (u *User) CreateUser(data User) error {
+func (u *User) CreateUser(data User) (int, error) {
 
-	query := `INSERT INTO USERS (NAME,EMAIL,PASSWORD) VALUES ($1,$2,$3)`
+	var userID int
+	query := `INSERT INTO USERS (NAME,EMAIL,PASSWORD) VALUES ($1,$2,$3) RETURNING ID`
 
-	_, err := db.Query(query, data.Name, data.Email, data.Password)
+	rows, err := db.Query(query, data.Name, data.Email, data.Password)
 	if err != nil {
-		return err
+		return userID, err
 	}
-	return nil
+	defer rows.Close()
+
+	for rows.Next() {
+		rows.Scan(&userID)
+	}
+	return userID, err
 
 }
 
