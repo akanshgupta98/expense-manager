@@ -17,9 +17,9 @@ func New(dbpool *sql.DB) Models {
 	}
 }
 
-func (u *User) CreateUser(data User) (int, error) {
+func (u *User) CreateUser(data User) (int64, error) {
 
-	var userID int
+	var userID int64
 	query := `INSERT INTO USERS (NAME,EMAIL,PASSWORD) VALUES ($1,$2,$3) RETURNING ID`
 
 	rows, err := db.Query(query, data.Name, data.Email, data.Password)

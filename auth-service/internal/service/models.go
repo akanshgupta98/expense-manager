@@ -8,7 +8,7 @@ type RegisterUserInput struct {
 }
 
 type RegisterUserOutput struct {
-	UserID int
+	UserID int64
 }
 
 type Login struct {

@@ -10,10 +10,10 @@ type AMQP struct {
 	ExchangeName string
 }
 
-type UserCreatedEvent struct {
-	UserID    int    `json:"user_id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Country   string `json:"country"`
-	Email     string `json:"email"`
-}
+// type UserCreatedEvent struct {
+// 	UserID    int    `json:"user_id"`
+// 	FirstName string `json:"first_name"`
+// 	LastName  string `json:"last_name"`
+// 	Country   string `json:"country"`
+// 	Email     string `json:"email"`
+// }

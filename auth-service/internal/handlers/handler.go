@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"auth-service/eventspb"
 	"auth-service/internal/amqp"
 	"auth-service/internal/service"
 	"auth-service/internal/util"
@@ -56,8 +57,8 @@ func Registration(c *gin.Context) {
 		},
 	}
 
-	eventData := amqp.UserCreatedEvent{
-		UserID:    data.UserID,
+	eventData := &eventspb.UserCreatedEvent{
+		UserId:    data.UserID,
 		Email:     payload.Email,
 		FirstName: payload.FirstName,
 		LastName:  payload.LastName,

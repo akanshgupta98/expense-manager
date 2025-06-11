@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package events;
+
+option go_package = "/eventspb";
+
+message UserCreatedEvent {
+    int64  user_id    =1;
+    string first_name =2;
+    string last_name  =3;
+    string country    =4;
+    string email      =5;
+}

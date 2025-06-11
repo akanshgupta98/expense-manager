@@ -4,6 +4,8 @@ import (
 	"auth-service/internal/config"
 	"encoding/json"
 
+	"github.com/akanshgupta98/expense-manager/contracts/eventspb"
+
 	"github.com/rabbitmq/amqp091-go"
 	mq "github.com/rabbitmq/amqp091-go"
 )
@@ -92,7 +94,7 @@ func PublishMessage(exchangeName, routingKey string, data []byte) error {
 
 }
 
-func PublishUserCreated(data UserCreatedEvent) error {
+func PublishUserCreated(data eventspb.UserCreatedEvent) error {
 	msg, err := json.Marshal(data)
 	if err != nil {
 		return err
