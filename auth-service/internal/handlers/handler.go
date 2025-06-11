@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"auth-service/eventspb"
 	"auth-service/internal/amqp"
 	"auth-service/internal/service"
 	"auth-service/internal/util"
 	"net/http"
 
+	"github.com/akanshgupta98/expense-manager/contracts/eventspb"
 	"github.com/akanshgupta98/go-logger"
 	"github.com/gin-gonic/gin"
 )

@@ -4,6 +4,7 @@ import (
 	"sync"
 	"user-service/internal/config"
 
+	"github.com/akanshgupta98/expense-manager/contracts/eventspb"
 	"github.com/akanshgupta98/go-logger/v2"
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -92,7 +93,8 @@ func ConsumeEvents(consume map[EXCHANGE]TOPICS) error {
 		go func() {
 			logger.Infof("started consumer")
 			for d := range msgs {
-				logger.Infof("recived event for topic: %s with data: %s", d.RoutingKey, string(d.Body))
+				data := &eventspb.UserCreatedEvent{}
+				logger.Infof("recived event for topic: %s with data: %+v", d.RoutingKey, data)
 			}
 		}()
 

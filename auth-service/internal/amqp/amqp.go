@@ -94,7 +94,7 @@ func PublishMessage(exchangeName, routingKey string, data []byte) error {
 
 }
 
-func PublishUserCreated(data eventspb.UserCreatedEvent) error {
+func PublishUserCreated(data *eventspb.UserCreatedEvent) error {
 	msg, err := json.Marshal(data)
 	if err != nil {
 		return err

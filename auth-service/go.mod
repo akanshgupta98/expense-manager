@@ -12,10 +12,11 @@ require (
 	github.com/jackc/pgx/v4 v4.18.3
 	github.com/rabbitmq/amqp091-go v1.10.0
 	golang.org/x/crypto v0.23.0
-	google.golang.org/protobuf v1.34.1
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
+	github.com/akanshgupta98/expense-manager/contracts v0.0.0-20250611142242-0a54347cdc39 // indirect
 	github.com/bytedance/sonic v1.11.6 // indirect
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect

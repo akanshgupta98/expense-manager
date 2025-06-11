@@ -19,7 +19,7 @@ build_gateway:
 
 build_auth:
 	@echo "Building auth-service"
-	cd ../auth-service && GOOS=linux CGO_ENABLED=0 go build -o $(AUTH_BINARY) ./cmd
+	cd ../auth-service && go mod download && GOOS=linux CGO_ENABLED=0 go build -o $(AUTH_BINARY) ./cmd
 	@echo "Built auth-service successfully"
 
 build_user:
