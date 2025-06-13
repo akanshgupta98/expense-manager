@@ -35,7 +35,7 @@ func CreateProfile(c *gin.Context) {
 		FirstName: request.FirstName,
 		LastName:  request.LastName,
 		Email:     request.Email,
-		UserID:    request.UserID,
+		UserID:    int64(request.UserID),
 		Country:   request.Country,
 	}
 	err = service.CreateProfile(data)

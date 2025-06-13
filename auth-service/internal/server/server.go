@@ -2,7 +2,8 @@ package server
 
 import (
 	"auth-service/internal/config"
-	"auth-service/internal/handlers"
+	v1 "auth-service/internal/handlers/v1"
+	"auth-service/internal/middleware"
 	"fmt"
 
 	"github.com/akanshgupta98/go-logger"
@@ -17,9 +18,11 @@ type Server struct {
 func New(cfg config.Config) *Server {
 	logger.Debugf("Server new called")
 	gin.SetMode(gin.ReleaseMode)
+	r := gin.New()
+	r.Use(middleware.LogMiddleWare())
 
 	return &Server{
-		router: gin.New(),
+		router: r,
 		Addr:   fmt.Sprintf(":%s", cfg.ServerConfig.WebPort),
 	}
 
@@ -27,22 +30,12 @@ func New(cfg config.Config) *Server {
 
 func (s *Server) ListenAndServe() error {
 
-	s.RegisterMiddleWare()
-	s.RegisterRoutes()
+	r := s.router.Group("/auth/v1")
+	v1.RegisterRoutes(r)
 	err := s.router.Run(s.Addr)
 	if err != nil {
 		return err
 	}
 
 	return nil
-}
-
-func (s *Server) RegisterRoutes() {
-	s.router.GET("/", handlers.HealthCheck)
-	s.router.POST("/auth/users", handlers.Registration)
-	s.router.GET("/auth/users", handlers.FetchAllUsers)
-	s.router.POST("/auth/login", handlers.Login)
-}
-func (s *Server) RegisterMiddleWare() {
-	s.router.Use(handlers.LogMiddleWare())
 }

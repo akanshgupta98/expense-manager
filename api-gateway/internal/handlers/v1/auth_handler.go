@@ -30,7 +30,7 @@ func Login(c *gin.Context) {
 }
 
 func Register(c *gin.Context) {
-	req, err := http.NewRequest("POST", "http://auth-service/auth/users", c.Request.Body)
+	req, err := http.NewRequest("POST", "http://auth-service/auth/v1/register", c.Request.Body)
 	if err != nil {
 		logger.Errorf("unable to create request: %s", err.Error())
 		util.ErrorJSON(c, err, nil)

@@ -7,7 +7,7 @@ var models *repo.Models
 type CreateProfileInput struct {
 	FirstName string
 	LastName  string
-	UserID    int
+	UserID    int64
 	Country   string
 	Email     string
 }

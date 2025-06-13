@@ -1,9 +1,9 @@
 package main
 
 import (
-	"auth-service/internal/amqp"
 	"auth-service/internal/config"
 	"auth-service/internal/database"
+	"auth-service/internal/events"
 	"auth-service/internal/server"
 	"auth-service/internal/service"
 
@@ -23,13 +23,13 @@ func main() {
 	}
 	defer db.Close()
 
-	service.Initialize(db, cfg)
-
-	err = amqp.Connect(cfg)
+	mb, err := events.Connect(cfg.AMQPConfig.Url)
 	if err != nil {
 		panic(err)
 	}
-	defer amqp.CloseConnection()
+	defer mb.Close()
+
+	service.Initialize(db, mb, cfg)
 
 	srv := server.New(cfg)
 	logger.Infof("starting auth-server on port: %s", cfg.ServerConfig.WebPort)

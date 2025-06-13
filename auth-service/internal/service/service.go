@@ -2,20 +2,24 @@ package service
 
 import (
 	"auth-service/internal/config"
+	"auth-service/internal/events"
 	"auth-service/internal/repository"
 	"database/sql"
 	"fmt"
 
+	"github.com/akanshgupta98/expense-manager/contracts/eventspb"
 	"github.com/akanshgupta98/go-logger"
+	"github.com/rabbitmq/amqp091-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
 var service Service
 
-func Initialize(db *sql.DB, cfg config.Config) {
+func Initialize(db *sql.DB, mb *amqp091.Connection, cfg config.Config) {
 	service = Service{
 		model:  repository.New(db),
 		secret: cfg.SecretKey,
+		event:  events.New(mb, cfg),
 	}
 
 }
@@ -36,25 +40,28 @@ func RegisterUser(payload RegisterUserInput) (RegisterUserOutput, error) {
 		return response, err
 	}
 
-	return response, nil
+	eventData := events.EventData{
 
-}
+		Topic: "user.created",
+		Data: &eventspb.UserCreatedEvent{
 
-func FetchAllUsers() ([]RegisterUserInput, error) {
-	var result []RegisterUserInput
-	data, err := service.model.User.GetAllUsers()
+			UserId:    response.UserID,
+			Email:     payload.Email,
+			FirstName: payload.FirstName,
+			LastName:  payload.LastName,
+			Country:   payload.Country,
+		},
+	}
+
+	err = service.event.SendEvent(eventData)
 	if err != nil {
-		return nil, err
+		logger.Warnf("unable to publish event on message broker: %s", err.Error())
+
+	} else {
+		logger.Infof("published event of user creation")
 	}
-	for _, u := range data {
-		user := RegisterUserInput{
-			// Name:     u.Name,
-			Email:    u.Email,
-			Password: u.Password,
-		}
-		result = append(result, user)
-	}
-	return result, nil
+
+	return response, nil
 
 }
 

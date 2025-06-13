@@ -17,7 +17,7 @@ func CreateProfile(profile CreateProfileInput) error {
 		LastName:  profile.LastName,
 		Email:     profile.Email,
 		Country:   profile.Country,
-		UserID:    profile.UserID,
+		UserID:    int(profile.UserID),
 	}
 	err := models.UserProfile.AddProfile(data)
 	if err != nil {

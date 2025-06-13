@@ -74,6 +74,7 @@ services:
       - "5672:5672"
     volumes:
       - ./db-data/rabbitmq-data/:/var/lib/rabbitmq
+    restart: always
     
   
     

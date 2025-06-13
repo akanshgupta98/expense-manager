@@ -1,10 +1,16 @@
 package service
 
-import "auth-service/internal/repository"
+import (
+	"auth-service/internal/events"
+	"auth-service/internal/repository"
+)
 
 type RegisterUserInput struct {
-	Password string
-	Email    string
+	Password  string
+	Email     string
+	FirstName string
+	LastName  string
+	Country   string
 }
 
 type RegisterUserOutput struct {
@@ -28,4 +34,5 @@ type Token struct {
 type Service struct {
 	model  repository.Models
 	secret string
+	event  events.Event
 }

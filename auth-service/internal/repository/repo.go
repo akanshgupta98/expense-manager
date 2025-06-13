@@ -2,6 +2,8 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/akanshgupta98/go-logger"
@@ -20,9 +22,21 @@ func New(dbpool *sql.DB) Models {
 func (u *User) CreateUser(data User) (int64, error) {
 
 	var userID int64
-	query := `INSERT INTO USERS (NAME,EMAIL,PASSWORD) VALUES ($1,$2,$3) RETURNING ID`
+	columnNames := strings.Join(dbData[AUTH_TABLE], ",")
+	args := []string{}
+	for i := 1; i <= len(dbData[AUTH_TABLE]); i++ {
 
-	rows, err := db.Query(query, data.Name, data.Email, data.Password)
+		str := fmt.Sprintf("$%d", i)
+		args = append(args, str)
+
+	}
+	valuePlaceholder := strings.Join(args, ",")
+
+	query := fmt.Sprintf("INSERT INTO %s (%s) VALUES (%s) RETURNING %s", AUTH_TABLE, columnNames, valuePlaceholder, AUTH_TABLE_PK)
+	// query := `INSERT INTO USERS (NAME,EMAIL,PASSWORD) VALUES ($1,$2,$3) RETURNING ID`
+	logger.Debugf("queru created is: %s", query)
+
+	rows, err := db.Query(query, data.Email, data.Password)
 	if err != nil {
 		return userID, err
 	}
