@@ -34,5 +34,5 @@ type Token struct {
 type Service struct {
 	model  repository.Models
 	secret string
-	event  events.Event
+	event  *events.Event
 }

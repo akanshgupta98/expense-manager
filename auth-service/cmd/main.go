@@ -28,6 +28,7 @@ func main() {
 		panic(err)
 	}
 	defer mb.Close()
+	events.New(mb, cfg)
 
 	service.Initialize(db, mb, cfg)
 

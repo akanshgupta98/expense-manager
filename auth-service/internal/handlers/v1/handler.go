@@ -35,8 +35,11 @@ func Registration(c *gin.Context) {
 
 	// send to service layer for processing.
 	serviceData := service.RegisterUserInput{
-		Email:    payload.Email,
-		Password: payload.Password,
+		Email:     payload.Email,
+		Password:  payload.Password,
+		FirstName: payload.FirstName,
+		LastName:  payload.LastName,
+		Country:   payload.Country,
 	}
 	data, err := service.RegisterUser(serviceData)
 	if err != nil {

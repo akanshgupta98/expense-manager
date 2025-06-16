@@ -8,13 +8,13 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func New(conn *amqp.Connection, cfg config.Config) Event {
+func New(conn *amqp.Connection, cfg config.Config) *Event {
 	event := Event{
 		URL:          cfg.AMQPConfig.Url,
 		ExchangeName: cfg.AMQPConfig.PublishExhange,
 		Conn:         conn,
 	}
-	return event
+	return &event
 }
 
 func Connect(url string) (*amqp.Connection, error) {

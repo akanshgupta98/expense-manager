@@ -10,7 +10,7 @@ import (
 )
 
 func Login(c *gin.Context) {
-	req, err := http.NewRequest("POST", "http://auth-service/auth/login", c.Request.Body)
+	req, err := http.NewRequest("POST", "http://auth-service/auth/v1/login", c.Request.Body)
 	if err != nil {
 		logger.Errorf("unable to create request: %s", err.Error())
 		util.ErrorJSON(c, err, nil)

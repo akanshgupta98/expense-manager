@@ -3,6 +3,7 @@ package server
 import "github.com/gin-gonic/gin"
 
 type Server struct {
-	mux  *gin.Engine
-	addr string
+	mux       *gin.Engine
+	addr      string
+	jwtSecret string
 }

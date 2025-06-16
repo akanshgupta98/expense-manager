@@ -74,15 +74,16 @@ func LoginUser(data Login) (Token, error) {
 	claims := Claims{
 		UserID: user.ID,
 	}
-	if data.Password == user.Password {
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password))
+	if err != nil {
+		logger.Errorf("password mismatch")
+		err = fmt.Errorf("username or password are incorrect")
+	} else {
 		token, err = issueToken(claims)
 		if err != nil {
 			return token, err
 		}
 
-	} else {
-		logger.Errorf("password mismatch")
-		err = fmt.Errorf("username or password are incorrect")
 	}
 	return token, err
 

@@ -16,6 +16,7 @@ func New() Config {
 			Env:    os.Getenv("ENV"),
 			Writer: os.Stdout,
 		},
+		JWTSecret: os.Getenv("JWT_Secret"),
 	}
 	return cfg
 

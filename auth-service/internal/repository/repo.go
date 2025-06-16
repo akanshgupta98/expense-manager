@@ -77,7 +77,7 @@ func (u *User) GetAllUsers() ([]User, error) {
 }
 
 func (u *User) FetchByEmail(email string) (User, error) {
-	query := `SELECT * FROM USERS WHERE EMAIL=$1`
+	query := fmt.Sprintf("SELECT * FROM %s WHERE EMAIL=$1", AUTH_TABLE)
 	var user User
 
 	rows, err := db.Query(query, email)
@@ -89,7 +89,6 @@ func (u *User) FetchByEmail(email string) (User, error) {
 	for rows.Next() {
 		err := rows.Scan(
 			&user.ID,
-			&user.Name,
 			&user.Email,
 			&user.Password,
 		)
