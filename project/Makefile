@@ -1,11 +1,12 @@
 AUTH_BINARY=authApp
 USER_BINARY=userApp
 GATEWAY_BINARY=gateway
+EXPENSE_BINARY=expenseApp
 up:
 	@echo "Starting docker containers"
 	docker-compose up -d
 
-up_build: build_auth build_user build_gateway
+up_build: build_auth build_user build_gateway build_expense
 	@echo "Stopping containers"
 	$(MAKE) down
 	@echo "Building container..."
@@ -28,6 +29,13 @@ bd_gateway: build_gateway
 	docker-compose rm -f api-gateway
 	docker-compose build api-gateway
 	docker-compose up -d api-gateway
+
+bd_expense: build_expense
+	docker-compose stop expense-service
+	docker-compose rm -f expense-service
+	docker-compose build expense-service
+	docker-compose up -d expense-service
+
 build_gateway:
 	@echo "Building api-gateway"
 	cd ../api-gateway && GOOS=linux CGO_ENABLED=0 go build -o ${GATEWAY_BINARY} ./cmd
@@ -42,6 +50,11 @@ build_user:
 	@echo "Building user-service"
 	cd ../user-service && GOOS=linux CGO_ENABLED=0 go build -o ${USER_BINARY} ./cmd
 	@echo "Built user binary successfully"
+
+build_expense:
+	@echo "Building expense-service"
+	cd ../expense-service && GOOS=linux CGO_ENABLED=0 go build -o ${EXPENSE_BINARY} ./cmd
+	@echo "Built expense binary successfully"
 
 down:
 	@echo "Stopping containers"

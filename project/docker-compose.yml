@@ -76,6 +76,20 @@ services:
     volumes:
       - ./db-data/rabbitmq-data/:/var/lib/rabbitmq
     restart: always
+  
+  expense-service:
+    build:
+      context: ../expense-service
+      dockerfile: ../expense-service/expense-service.dockerfile
+    
+    ports:
+      - "8085:80"
+    
+    environment:
+      - ENV=Development
+    
+    restart: always
+    
     
   
     
